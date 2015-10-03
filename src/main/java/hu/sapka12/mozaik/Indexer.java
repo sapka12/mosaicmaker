@@ -12,20 +12,20 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.data.mongodb.core.MongoOperations;
 
-public class MozaikMaker
+public class Indexer
 {
-    private static final Logger LOGGER = LoggerFactory.getLogger(MozaikMaker.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Indexer.class);
 
     private final MongoOperations mongo;
     private final FlickrCrawler crawler;
 
     public static void main(String[] args) throws FlickrException
     {
-        MozaikMaker mozaikMaker = new MozaikMaker();
+        Indexer mozaikMaker = new Indexer();
         mozaikMaker.indexPicturesInYear(2015);
     }
 
-    public MozaikMaker() throws FlickrException
+    public Indexer() throws FlickrException
     {
         ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringMongoConfig.class);
 
