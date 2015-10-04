@@ -1,4 +1,4 @@
-package hu.sapka12.mozaik;
+package hu.sapka12.mozaik.index;
 
 import com.flickr4java.flickr.Flickr;
 import com.flickr4java.flickr.FlickrException;
@@ -13,9 +13,9 @@ import com.flickr4java.flickr.photos.PhotosInterface;
 import com.flickr4java.flickr.photos.Size;
 import com.flickr4java.flickr.photosets.Photoset;
 import com.flickr4java.flickr.photosets.PhotosetsInterface;
-import hu.sapka12.mozaik.index.Color;
-import hu.sapka12.mozaik.index.Identifier;
-import hu.sapka12.mozaik.index.IndexData;
+import hu.sapka12.mozaik.index.model.Color;
+import hu.sapka12.mozaik.index.model.Identifier;
+import hu.sapka12.mozaik.index.model.IndexData;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package hu.sapka12.mozaik;
+package hu.sapka12.mozaik.maker.bufferedimage;
 
 import hu.sapka12.mozaik.maker.ITile;
 import java.awt.image.BufferedImage;

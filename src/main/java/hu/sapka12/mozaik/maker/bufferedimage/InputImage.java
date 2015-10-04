@@ -1,16 +1,16 @@
-package hu.sapka12.mozaik;
+package hu.sapka12.mozaik.maker.bufferedimage;
 
 import java.awt.image.BufferedImage;
 import org.springframework.util.Assert;
 import hu.sapka12.mozaik.maker.ITile;
 import hu.sapka12.mozaik.maker.IInputImage;
 
-public class Image implements IInputImage<BufferedImage>
+public class InputImage implements IInputImage<BufferedImage>
 {
     private final BufferedImage input;
     private final int tileSizeInPx;
 
-    public Image(BufferedImage input, int tileSizeInPx)
+    public InputImage(BufferedImage input, int tileSizeInPx)
     {
         this.input = input;
         this.tileSizeInPx = tileSizeInPx;

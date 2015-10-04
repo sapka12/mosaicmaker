@@ -1,4 +1,4 @@
-package hu.sapka12.mozaik;
+package hu.sapka12.mozaik.maker.bufferedimage;
 
 import hu.sapka12.mozaik.maker.IMozaikBuilder;
 import java.awt.image.BufferedImage;
@@ -20,20 +20,20 @@ public class MozaikBuilder implements IMozaikBuilder<BufferedImage>
     @Override
     public BufferedImage build()
     {
-        int maxRow = 0;
-        int maxColumn = 0;
+        int numberOfRows = 0;
+        int numberOfCoulumns = 0;
         int tileSize = 0;
 
         for (Map.Entry<Pair<Integer, Integer>, ITile<BufferedImage>> entry : map.entrySet())
         {
             Pair<Integer, Integer> coord = entry.getKey();
-            if (coord.getLeft() > maxRow)
+            if (coord.getLeft() > numberOfRows)
             {
-                maxRow = coord.getLeft();
+                numberOfRows = coord.getLeft();
             }
-            if (coord.getRight() > maxColumn)
+            if (coord.getRight() > numberOfCoulumns)
             {
-                maxColumn = coord.getRight();
+                numberOfCoulumns = coord.getRight();
             }
 
             ITile<BufferedImage> tile = entry.getValue();
@@ -44,7 +44,15 @@ public class MozaikBuilder implements IMozaikBuilder<BufferedImage>
             }
         }
 
-        BufferedImage out = new BufferedImage(maxColumn * tileSize, maxRow * tileSize, BufferedImage.TYPE_INT_RGB);
+        LOGGER.info("-----------------------------------------");
+        LOGGER.info("-----------------------------------------");
+        LOGGER.info("numberOfRows: {}", numberOfRows);
+        LOGGER.info("numberOfCoulumns: {}", numberOfCoulumns);
+        LOGGER.info("tileSize: {}", tileSize);
+
+        LOGGER.info("image: {}x{}", numberOfCoulumns * tileSize, numberOfRows * tileSize);
+
+        BufferedImage out = new BufferedImage(numberOfCoulumns * tileSize, numberOfRows * tileSize, BufferedImage.TYPE_INT_RGB);
         map.entrySet().stream().forEach((entry) ->
         {
             Pair<Integer, Integer> coord = entry.getKey();
@@ -86,18 +94,17 @@ public class MozaikBuilder implements IMozaikBuilder<BufferedImage>
             for (int y = 0; y < tile.getHeight(); y++)
             {
                 int rgb = tile.getRGB(x, y);
+                int outX = column * tile.getHeight() + x;
+                int outY = row * tile.getWidth() + y;
+                
                 try
                 {
-                    out.setRGB(row * tile.getHeight() + y, column * tile.getWidth() + x, rgb);
-
+                    out.setRGB(outX, outY, rgb);
                 } catch (Exception e)
                 {
-//                    LOGGER.error("ROW{} COL{}", row, column);
-//            throw new RuntimeException(e);
+                    LOGGER.error("X{} Y{}", outX, outX);
                 }
             }
         }
-
     }
-
 }

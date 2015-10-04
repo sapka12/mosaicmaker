@@ -1,4 +1,4 @@
-package hu.sapka12.mozaik;
+package hu.sapka12.mozaik.maker.bufferedimage;
 
 import hu.sapka12.mozaik.maker.ITileFinderStrategy;
 import java.awt.image.BufferedImage;
@@ -13,12 +13,6 @@ public class EasyStrategy implements ITileFinderStrategy<BufferedImage>
     public EasyStrategy(int tileSize)
     {
         this.tileSize = tileSize;
-    }
-
-    @Override
-    public int getTileSize()
-    {
-        return tileSize;
     }
 
     @Override

@@ -1,8 +1,9 @@
 package hu.sapka12.mozaik;
 
+import hu.sapka12.mozaik.index.FlickrCrawler;
 import com.flickr4java.flickr.FlickrException;
-import hu.sapka12.mozaik.index.Identifier;
-import hu.sapka12.mozaik.index.IndexData;
+import hu.sapka12.mozaik.index.model.Identifier;
+import hu.sapka12.mozaik.index.model.IndexData;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
