@@ -4,16 +4,25 @@ import java.awt.image.BufferedImage;
 import org.springframework.util.Assert;
 import hu.sapka12.mozaik.maker.ITile;
 import hu.sapka12.mozaik.maker.IInputImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import org.springframework.stereotype.Component;
 
+@Component
 public class InputImage implements IInputImage<BufferedImage>
 {
     private final BufferedImage input;
     private final int tileSizeInPx;
 
-    public InputImage(BufferedImage input, int tileSizeInPx)
+    public InputImage()
     {
-        this.input = input;
-        this.tileSizeInPx = tileSizeInPx;
+        try {
+            this.input = ImageIO.read(new File("input.jpg"));
+            this.tileSizeInPx = 16;
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     @Override

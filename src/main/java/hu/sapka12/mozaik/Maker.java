@@ -1,6 +1,5 @@
 package hu.sapka12.mozaik;
 
-import hu.sapka12.mozaik.maker.bufferedimage.InputImage;
 import hu.sapka12.mozaik.maker.bufferedimage.MozaikBuilder;
 import hu.sapka12.mozaik.maker.IMozaikBuilder;
 import hu.sapka12.mozaik.maker.ITileFinderStrategy;
@@ -10,8 +9,13 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import hu.sapka12.mozaik.maker.ITile;
 import hu.sapka12.mozaik.maker.IInputImage;
-import hu.sapka12.mozaik.maker.bufferedimage.EasyStrategy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Maker<T>
 {
     private final IInputImage<T> inputImage;
@@ -20,17 +24,15 @@ public class Maker<T>
 
     public static void main(String[] args) throws IOException
     {
-        BufferedImage inputImage = ImageIO.read(new File("input.jpg"));
-        IInputImage<BufferedImage> input = new InputImage(inputImage, 64);
-        ITileFinderStrategy<BufferedImage> tileFinderStrategy = new EasyStrategy(64);
-        IMozaikBuilder<BufferedImage> mozaikBuilder = new MozaikBuilder();
-
-        Maker<BufferedImage> maker = new Maker<>(input, tileFinderStrategy, mozaikBuilder);
+        ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringMongoConfig.class);
+        Maker<BufferedImage> maker = (Maker<BufferedImage>) ctx.getBean("maker");
+        
         BufferedImage image = maker.make();
 
         ImageIO.write(image, "jpg", new File("out.jpg"));
     }
 
+    @Autowired
     public Maker(IInputImage<T> inputImage, ITileFinderStrategy<T> tileFinderStrategy, IMozaikBuilder<T> mozaikBuilder)
     {
         this.inputImage = inputImage;

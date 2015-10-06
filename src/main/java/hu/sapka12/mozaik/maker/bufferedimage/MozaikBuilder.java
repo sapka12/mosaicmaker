@@ -9,11 +9,12 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+@Component
 public class MozaikBuilder implements IMozaikBuilder<BufferedImage>
 {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(MozaikBuilder.class);
     private final Map<Pair<Integer, Integer>, ITile<BufferedImage>> map = new HashMap<>();
 
@@ -102,7 +103,7 @@ public class MozaikBuilder implements IMozaikBuilder<BufferedImage>
                     out.setRGB(outX, outY, rgb);
                 } catch (Exception e)
                 {
-                    LOGGER.error("X{} Y{}", outX, outX);
+//                    LOGGER.error("X{} Y{}", outX, outX);
                 }
             }
         }

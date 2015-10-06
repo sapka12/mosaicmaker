@@ -4,15 +4,16 @@ import hu.sapka12.mozaik.maker.ITileFinderStrategy;
 import java.awt.image.BufferedImage;
 import hu.sapka12.mozaik.maker.ITile;
 import java.awt.Color;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EasyStrategy implements ITileFinderStrategy<BufferedImage>
 {
-
     private final int tileSize;
 
-    public EasyStrategy(int tileSize)
+    public EasyStrategy()
     {
-        this.tileSize = tileSize;
+        this.tileSize = 64;
     }
 
     @Override
