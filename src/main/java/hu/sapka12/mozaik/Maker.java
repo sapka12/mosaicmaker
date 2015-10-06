@@ -1,6 +1,5 @@
 package hu.sapka12.mozaik;
 
-import hu.sapka12.mozaik.maker.bufferedimage.MozaikBuilder;
 import hu.sapka12.mozaik.maker.IMozaikBuilder;
 import hu.sapka12.mozaik.maker.ITileFinderStrategy;
 import java.awt.image.BufferedImage;
@@ -12,7 +11,6 @@ import hu.sapka12.mozaik.maker.IInputImage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
 
 @Component
