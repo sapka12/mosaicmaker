@@ -15,7 +15,7 @@ public class App {
         MozaikMaker mozaikMaker = (MozaikMaker) ctx.getBean("mozaikMaker");
         
         BufferedImage input = ImageIO.read(new File("input.jpg"));
-        int tileSize = 16;
+        int tileSize = 128;
         
         BufferedImage out = mozaikMaker.make(input, tileSize);
         

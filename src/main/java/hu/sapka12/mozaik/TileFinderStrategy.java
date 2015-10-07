@@ -1,15 +1,19 @@
 package hu.sapka12.mozaik;
 
-import hu.sapka12.mozaik.maker.ITile;
+import hu.sapka12.mozaik.index.FlickrFactory;
 import hu.sapka12.mozaik.maker.ITileFinderStrategy;
-import hu.sapka12.mozaik.maker.bufferedimage.Tile;
+import hu.sapka12.mozaik.maker.bufferedimage.EasyStrategy;
 import java.awt.image.BufferedImage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoOperations;
+import org.springframework.stereotype.Component;
 
-public class TileFinderStrategy implements ITileFinderStrategy<BufferedImage>{
+@Component
+public class TileFinderStrategy extends EasyStrategy implements ITileFinderStrategy<BufferedImage>{
 
-    @Override
-    public Tile findSubstitute(ITile<BufferedImage> tile) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Autowired
+    public TileFinderStrategy(MongoOperations mongo, FlickrFactory flickrFactory)
+    {
+        super(mongo, flickrFactory);
     }
-    
 }

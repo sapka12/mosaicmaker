@@ -4,8 +4,10 @@ import hu.sapka12.mozaik.maker.bufferedimage.Tile;
 import java.awt.image.BufferedImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
+@Component
 public class TileFactory {
 
     private final Logger LOGGER = LoggerFactory.getLogger(TileFactory.class);

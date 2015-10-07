@@ -32,10 +32,11 @@ public class EasyStrategy implements ITileFinderStrategy<BufferedImage> {
     }
 
     @Override
-    public ITile<BufferedImage> findSubstitute(ITile<BufferedImage> tile) {
+    public Tile findSubstitute(ITile<BufferedImage> tile) {
+        
         BufferedImage input = tile.get();
 
-        ITile<BufferedImage> flickrTile = getFromFlickr(tile);
+        Tile flickrTile = getFromFlickr(tile);
 
         if (flickrTile == null) {
             int rgb = getAverageColor(input);
@@ -77,7 +78,7 @@ public class EasyStrategy implements ITileFinderStrategy<BufferedImage> {
         return output;
     }
 
-    private ITile<BufferedImage> getFromFlickr(ITile<BufferedImage> tile) {
+    private Tile getFromFlickr(ITile<BufferedImage> tile) {
         BufferedImage tileImage = tile.get();
         int rgb = getAverageColor(tileImage);
         IndexData indexData = findClosestIndexData(rgb);
