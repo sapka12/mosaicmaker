@@ -1,6 +1,6 @@
 package hu.sapka12.mozaik;
 
-import hu.sapka12.mozaik.maker.ITileFinderStrategy;
+import hu.sapka12.mozaik.tile.TileChanger;
 import hu.sapka12.mozaik.tile.TileFactory;
 import hu.sapka12.mozaik.tile.Tiles;
 import java.awt.image.BufferedImage;
@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class MozaikMaker {
 
-    private final ITileFinderStrategy<BufferedImage> finderStrategy;
+    private final TileChanger tileChanger;
     private final TileFactory tileFactory;
     
     @Autowired
-    public MozaikMaker(ITileFinderStrategy<BufferedImage> finderStrategy, TileFactory tileFactory) {
-        this.finderStrategy = finderStrategy;
+    public MozaikMaker(TileFactory tileFactory, TileChanger tileChanger) {
+        this.tileChanger = tileChanger;
         this.tileFactory = tileFactory;
     }
 
@@ -26,7 +26,10 @@ public class MozaikMaker {
                 normalizeSize(input.getWidth(), tileSize), 
                 normalizeSize(input.getHeight(), tileSize));
         
-        return subimage;
+        Tiles tiles = tileFactory.getTiles(subimage, tileSize);
+        tiles = tileChanger.change(tiles);
+        
+        return tiles.buildImage();
     }
 
     private static int normalizeSize(int size, int tileSize) {

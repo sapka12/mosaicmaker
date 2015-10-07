@@ -17,5 +17,6 @@ public class TileFactoryTest {
 
         Assert.assertEquals(tiles.numberOfRows(), 10);
         Assert.assertEquals(tiles.numberOfColumns(), 14);
-    }
+    }   
+    
 }
