@@ -1,1 +1,5 @@
 /target/
+/nbproject/
+input.jpg
+out.jpg
+src/main/resources/config.properties

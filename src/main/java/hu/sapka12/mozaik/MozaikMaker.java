@@ -1,74 +1,51 @@
 package hu.sapka12.mozaik;
 
-import com.flickr4java.flickr.FlickrException;
-import hu.sapka12.mozaik.index.Identifier;
-import hu.sapka12.mozaik.index.IndexData;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.data.mongodb.core.MongoOperations;
+import hu.sapka12.mozaik.tile.TileChanger;
+import hu.sapka12.mozaik.tile.TileFactory;
+import hu.sapka12.mozaik.tile.Tiles;
+import java.awt.image.BufferedImage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class MozaikMaker
-{
-    private static final Logger LOGGER = LoggerFactory.getLogger(MozaikMaker.class);
+@Component
+public class MozaikMaker {
 
-    private final MongoOperations mongo;
-    private final FlickrCrawler crawler;
-
-    public static void main(String[] args) throws FlickrException
-    {
-        MozaikMaker mozaikMaker = new MozaikMaker();
-        mozaikMaker.indexPicturesInYear(2015);
+    private final TileChanger tileChanger;
+    private final TileFactory tileFactory;
+    
+    @Autowired
+    public MozaikMaker(TileFactory tileFactory, TileChanger tileChanger) {
+        this.tileChanger = tileChanger;
+        this.tileFactory = tileFactory;
     }
 
-    public MozaikMaker() throws FlickrException
-    {
-        ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringMongoConfig.class);
+    public BufferedImage make(BufferedImage input, int tileSize) {
+        assertImageSize(input, tileSize);
 
-        mongo = (MongoOperations) ctx.getBean("mongoTemplate");
-        crawler = (FlickrCrawler) ctx.getBean("flickrCrawler");
+        BufferedImage subimage = input.getSubimage(0, 0, 
+                normalizeSize(input.getWidth(), tileSize), 
+                normalizeSize(input.getHeight(), tileSize));
+        
+        Tiles tiles = tileFactory.getTiles(subimage, tileSize);
+        tiles = tileChanger.change(tiles);
+        
+        return tiles.buildImage();
     }
 
-    public void indexPicturesInYear(int year) throws FlickrException
-    {
-        LOGGER.info("Start " + year);
-
-        Set<IndexData> datas = crawler.crawl(year);
-
-        LOGGER.info("INDEX:");
-
-        persist(datas);
+    private static int normalizeSize(int size, int tileSize) {
+        return size - size % tileSize;
     }
 
-    private void persist(Set<IndexData> datas)
-    {
+    private void assertImageSize(BufferedImage image, int tileSize) {
+        int width = image.getWidth();
+        int height = image.getHeight();
 
-        List<IndexData> alreadyInsertedData = mongo.findAll(IndexData.class);
-        for (Iterator<IndexData> iterator = datas.iterator(); iterator.hasNext();)
-        {
-            IndexData data = iterator.next();
-            for (IndexData indexData : alreadyInsertedData)
-            {
-                final Identifier id = indexData.getId();
-                final Identifier actualId = data.getId();
-                if (id.getPictureId().equals(actualId.getPictureId())
-                        && id.getUserId().equals(actualId.getUserId()))
-                {
-                    iterator.remove();
-                    break;
-                }
-            }
+        if (width < tileSize) {
+            throw new IllegalArgumentException("Width[" + width + "] is smaller than tileSize[" + tileSize + "]");
         }
 
-        mongo.insertAll(datas);
-
-        for (IndexData data : datas)
-        {
-            LOGGER.info("{}", data);
+        if (height < tileSize) {
+            throw new IllegalArgumentException("Height[" + height + "] is smaller than tileSize[" + tileSize + "]");
         }
     }
 }
